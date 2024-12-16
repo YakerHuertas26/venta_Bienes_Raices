@@ -1,0 +1,19 @@
+@use './base/globales';
+@use './base/mixins';
+@use './base/normalize';
+@use './base/unidades';
+@use './base/variables';
+@use './base//botones';
+
+@use './layout/header';
+@use './layout/footer';
+@use './layout/navegacion';
+@use './layout/icono';
+@use './layout/anuncios';
+@use './layout/inferior';
+@use './layout/testimoneales';
+
+// styled of view 
+@use './internas/nosotros';
+@use './layout/formulario';
+@use './base/dark_mode';

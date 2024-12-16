@@ -1,0 +1,23 @@
+@use '../base/variables';
+.footer{
+    // border: solid red 2px;
+    padding-top: 2rem;
+    background-color: variables.$grisOscuro;
+    margin-bottom: 0;
+    .contenedor-footer{
+        padding-top: 2rem;
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        justify-content: center;
+    }
+    .copyright{
+        color: variables.$blanco;
+        text-align: center;
+        margin-bottom: 0;
+    }
+    a{
+        text-decoration: none;
+        color: variables.$blanco;
+    }
+}

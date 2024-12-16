@@ -1,0 +1,45 @@
+@use '../base/variables';
+@use '../base/mixins';
+
+// .no-webp .inicio{
+//     background-image: url(../../../public/img/header.jpg);
+// }
+// .webp .inicio{
+//     background-image: url(../../../public/img/header.webp);
+// }
+.header{
+    background-color:variables.$grisOscuro;
+    padding: 2rem,0,3rem 0;
+    
+    &.inicio{
+        @include mixins.tablet {
+            min-height: 45rem;
+        }
+        .contenido-header{
+            @include mixins.tablet {
+            min-height: 50rem;
+    }
+        }
+    }
+}
+.inicio{
+    background-image: url(../../../public/img/header.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.contenido-header{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 3rem;
+    
+    h1{
+        max-width: 60rem;
+        color: variables.$blanco;
+        font-weight: variables.$bold;
+        line-height: 1.5;
+        text-align: left;
+    }
+}

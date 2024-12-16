@@ -1,0 +1,38 @@
+@use './mixins';
+@use './variables';
+
+.boton-amarillo{
+    @include mixins.boton(variables.$amarillo, block);
+}
+.boton-verde{
+    @include mixins.boton(variables.$verde,inline-block );
+}
+.ver-todas{
+    display: flex;
+    justify-content: center;
+}
+.boton-amarillo-inline{
+    @include mixins.boton(variables.$amarillo, inline-block);
+}
+.imagen-contacto{
+    background-image: url(../../../public/img/encuentra.jpg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2rem;
+    p{
+        color: #fff;
+    }
+    h2{
+        font-size: 3rem;
+        font-weight: bold;
+        color: variables.$blanco;
+    }
+    a{
+        font-size: 2rem;
+        color: variables.$blanco;
+    }
+}

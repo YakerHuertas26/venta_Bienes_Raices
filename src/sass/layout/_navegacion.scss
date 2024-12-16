@@ -1,0 +1,61 @@
+@use '../base/mixins';
+@use '../base/variables';
+
+.dark-mode-boton{
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        margin-top: 1rem;
+        filter: invert(100%);
+}
+
+.barra{
+    // background-color: red;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.5rem;
+    align-items: center;
+    @include mixins.tablet {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+
+.navegacion{
+    display: none;
+    // visibility: hidden; //funciona igual
+        @include mixins.tablet{
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        a{
+            color: variables.$blanco;
+            text-decoration: none;
+            font-size: 2rem;
+            display: block;
+            text-align: center;
+        }
+        &--active{
+            display: block;
+            // visibility: visible;
+        }
+    
+}
+
+.mobile-menu{
+    @include mixins.tablet{
+        display: none;
+    }
+    img{
+        width: 4rem;
+        margin-top: 1rem;
+    }
+}
+.contendor-iconos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}

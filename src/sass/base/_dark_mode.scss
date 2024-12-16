@@ -1,0 +1,29 @@
+@use './variables';
+.dark-mode{
+    background-color:variables.$grisOscuro;
+    color: #fff;
+    p{
+        color: #fff;
+    }
+    h4,h2,h3{
+        color:variables.$gris;
+    }
+    .seccion{
+        color: #000;
+        .precio{
+            color: variables.$verde;
+        }
+    }
+    .contenido-anuncio p{
+        color: #000; 
+     }
+     .contenido-anuncio h3{
+        color: #000; 
+     }
+     legend,label{
+        color: #fff;
+     }
+     blockquote{
+        color: variables.$gris;
+     }
+}
