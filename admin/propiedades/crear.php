@@ -1,9 +1,13 @@
 <?php
     // establesco conexion 
     require_once '../../src/config/dataBase.php';
-    include_once '../../src/includes/headerVistas.php';
     $db=conexion();
-
+    
+    // obtener lista de vendedores
+    // get list of sellers
+    $queryVendedores= $db ->prepare("SELECT * FROM vendedor");
+    $queryVendedores->execute();
+    $resultadoVendedores= $queryVendedores->get_result();
 
     // guardar mensajes de error de campos vacios
     // save error messages from empty fields 
@@ -31,6 +35,8 @@
         $serviciosHigienicos= $_POST['serviciosHigienicos'];
         $estacionamiento= $_POST['estacionamiento'];
         $vendedor_id= $_POST['vendedor'];
+        $creacion=date('Y-m-a');
+
 
         // validación de cada campo
         // validation of each field
@@ -46,9 +52,9 @@
         if (empty($error)) {
             // consulta preparadas sql para crear nueva propiedad 
             // sql query prepared  to create new propiety
-            $queryNewPropiety= $db ->prepare("INSERT INTO propiedad (titulo, precio,descripcion,habitaciones, serviciosHigienicos,estacionamiento,vendedor_id) VALUES (?, ?,?,?,?,?,?)");
+            $queryNewPropiety= $db ->prepare("INSERT INTO propiedad (titulo, precio,descripcion,habitaciones, serviciosHigienicos,estacionamiento,creacion,vendedor_id) VALUES (?,?,?,?,?,?,?,?)");
             // vincular 
-            $queryNewPropiety->bind_param("sdsiiii",$titulo,$precio,$descripcion,$habitaciones,$serviciosHigienicos,$estacionamiento,$vendedor_id);
+            $queryNewPropiety->bind_param("sdsiiisi",$titulo,$precio,$descripcion,$habitaciones,$serviciosHigienicos,$estacionamiento,$creacion,$vendedor_id);
             // ejecuto
             $queryNewPropiety->execute();
             if ($queryNewPropiety->affected_rows>0) {
@@ -60,6 +66,9 @@
                 $serviciosHigienicos= '';
                 $estacionamiento= '';
                 $vendedor_id= '';
+                $creacion=date('Y-m-a');
+                // redireccionar
+                // header('Location: /admin');
             }else{
                 echo 'error';
             }
@@ -69,35 +78,64 @@
     }
     $db->close();
 ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APP BIENES RAICES</title>
+    <link rel="stylesheet" href="../../public/css/index.css">
+    <script src="/src/js/app.js" defer></script>
+    
+</head>
+<body>
+    <header class="header">
+        <div class="contenedor contenido-header">
+            <div class="barra">
+                <a href=""> <img src="../../public/img/logo.svg" alt="logo de bienes raices"></a>
+
+                <div class="contendor-iconos">
+                    <div class="mobile-menu ">
+                        <img src="../../public/img/barras.svg" alt="menu-navegacion">
+                    </div>
+                    <img src="../../public/img/dark-mode.svg" alt="modo-dark" class="dark-mode-boton">
+                </div>
+
+                <nav class="navegacion">
+                    <a href="./nosotros.php">Nosotros</a>
+                    <a href="./anuncios.php">Anuncios</a>
+                    <a href="./blog.php">Blog</a>
+                    <a href="./contacto.php">Contacto</a>
+                </nav>
+            </div>
+        
+        </div>
+    </header>
+
     <main class="contenedor seccion">
         <h2>crear página</h2>
-        <a href="/admin/index.php" class="boton boton-verde">Volver  </a>
+        <a href="../index.php" class="boton boton-verde">Volver  </a>
 
     
-    <form action="/admin/propiedades/crear.php" class="formulario" method="POST">
+    <form action="/app_bienes_raices/admin/propiedades/crear.php" class="formulario" method="POST">
         <fieldset>
             <legend>Información general</legend>
             
             <label for="titulo">Nombre de la propiedad: </label>
             <input type="text" name="titulo" id="titulo" placeholder="Nombre de la propiedad" value="<?php echo $titulo?>">
-            <?php if (empty($titulo)&& isset($error[0])) {?> 
-                <p class="error" style="color:red"><?php echo $error[0]?></p>
-            <?php }?>  
+            <?php echo (empty($titulo) && isset($error[0])) ? "<p class='error' style='color:red'>{$error[0]}</p>" : ''; ?>
+
 
             <label for="precio">Precio:</label>
             <input type="text" name="precio" id="precio" placeholder="precio" value="<?php echo $precio?>">
-            <?php if (empty($precio )  && isset($error[0])) {?> 
-                <p class="error" style="color:red"><?php echo $error[0]?></p>
-            <?php }?> 
+            <?php echo (empty($precio )  && isset($error[0])) ? "<p class='error' style='color:red'>{$error[0]}</p>":'';?> 
 
             <label for="imagen">Imagen: </label>
             <input type="file" name="imagen" id="imagen" accept="image/jpeg , image/png">
 
             <label for="descripcion" class="descripcion">Descripción</label>
             <textarea name="descripcion" id="descripcion"> <?php echo$descripcion?></textarea>
-            <?php if ( isset($error[1])) {?> 
-                <p class="error" style="color:red"><?php echo $error[1]?></p>
-            <?php }?> 
+            <?php echo (isset($error[0])) ? "<p class='error' style='color:red'>{$error[1]}</p>":'';?> 
         </fieldset>
 
         <fieldset>
@@ -105,38 +143,33 @@
 
             <label for="habitaciones">habitaciones:</label>
             <input type="number" name="habitaciones" id="habitaciones" placeholder="habitaciones" value="<?php echo $habitaciones?>">
-            <?php if (empty($habitaciones) && isset($error[0])) {?> 
-                <p class="error" style="color:red"><?php echo $error[0]?></p>
-            <?php }?> 
+            <?php echo (empty($habitaciones )  && isset($error[0])) ? "<p class='error' style='color:red'>{$error[0]}></p>":'';?> 
 
             <label for="serviciosHigienicos">baños:</label>
             <input type="number" name="serviciosHigienicos" id="serviciosHigienicos" placeholder="servicios" value="<?php echo $serviciosHigienicos?>">
-            <?php if (empty($serviciosHigienicos)  && isset($error[0])) {?> 
-                <p class="error" style="color:red"><?php echo $error[0]?></p>
-            <?php }?> 
+            <?php echo (empty($serviciosHigienicos )  && isset($error[0])) ? "<p class='error' style='color:red'>{$error[0]}></p>":'';?> 
 
             <label for="estacionamiento">estacionamiento:</label>
             <input type="estacionamiento" name="estacionamiento" id="estacionamiento" placeholder="estacionamiento" value="<?php echo $estacionamiento?>">
-            <?php if (empty($estacionamiento)  && isset($error[0])) {?> 
-                <p class="error" style="color:red"><?php echo $error[0]?></p>
-            <?php }?> 
+            <?php echo (empty($estacionamiento )  && isset($error[0])) ? "<p class='error' style='color:red'>{$error[0]}></p>":'';?> 
         </fieldset>
 
         <fieldset>
             <legend>Vendedor</legend>
             <select name="vendedor" id="vendedor">
                 <option value="">--vendedor--</option>
-                <option value="1">Aleja</option>
-                <option value="2">Artur</option>
+                <?php while ($row=$resultadoVendedores->fetch_assoc()) : ?>
+                <option 
+                <?php echo $vendedor_id==$row['id'] ? 'selected':'' ?>
+                value="<?php echo $row['id'] ?>"> <?php echo $row['nombre']." ". $row['apellido'] ?> </option>
+                <?php endwhile;?>
             </select>
-            <?php if (empty($vendedor_id)  && isset($error[0])) {?> 
-                <p class="error" style="color:red"><?php echo $error[0]?></p>
-            <?php }?> 
+            <?php echo (empty($vendedor_id )  && isset($error[0])) ? "<p class='error' style='color:red'>{$error[0]}></p>":'';?> 
         </fieldset>
 
         <input type="submit" value="crear propiedad" class="boton boton-verde">
     </form>
     </main>
 <?php
-    include_once '../../src/includes/footer.php'
+    include_once '../footer.php';
 ?>
