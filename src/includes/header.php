@@ -14,9 +14,9 @@
     <header class="header inicio">
         <div class="contenedor contenido-header">
             <div class="barra">
-                <a href="/"> <img src="/public//img/logo.svg" alt="logo de bienes raices"></a>
+                <a href=""> <img src="./public/img/logo.svg" alt="logo de bienes raices"></a>
 
-                <div class="contendor-iconos">
+                <div class="contendor-iconos"> 
                     <div class="mobile-menu ">
                         <img src="../../public/img/barras.svg" alt="menu-navegacion">
                     </div>

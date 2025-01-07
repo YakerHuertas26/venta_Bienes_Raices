@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APP BIENES RAICES</title>
     <link rel="stylesheet" href="../public/css/index.css">
-    <script src="/src/js/app.js" defer></script>
+    <script src="../src/js/app.js" defer></script>
     
 </head>
 <body>
@@ -22,10 +22,10 @@
                 </div>
 
                 <nav class="navegacion">
-                    <a href="./nosotros.php">Nosotros</a>
-                    <a href="./anuncios.php">Anuncios</a>
-                    <a href="./blog.php">Blog</a>
-                    <a href="./contacto.php">Contacto</a>
+                    <a href="../src/view/nosotros.php">Nosotros</a>
+                    <a href="../src/view/anuncios.php">Anuncios</a>
+                    <a href="../src/view/blog.php">Blog</a>
+                    <a href="../src/view/contacto.php">Contacto</a>
                 </nav>
             </div>
         

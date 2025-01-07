@@ -1,6 +1,8 @@
 const barra=document.querySelector('.mobile-menu');
 const nav= document.getElementById('navegacion');
 const dark_modo=document.querySelector('.dark-mode-boton');
+
+
 barra.addEventListener('click',()=>{
         nav.classList.toggle('navegacion--active')
     }
