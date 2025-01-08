@@ -48,9 +48,9 @@
         // "</pre>";
 
         // // super global para ver los datos de los archivos file
-        //     echo "<pre>";
-        //     var_dump($_FILES);
-        //     "</pre>";
+            // echo "<pre>";
+            // var_dump($_FILES);
+            // "</pre>";
 
 
         // validación de cada campo
@@ -65,27 +65,33 @@
         if (!$imagen['name']|| $imagen['error']) {
             $errorImagen[]='debe añadir una imagen';
         }
-        
+
         // verificar si no hay errores
         // check not erros
         if (empty($error) && empty($errorImagen)) {
             // Subir los archivos
-
                 // dirección de carpeta en la raiz
-                $carpetaImagen= '../../imagenes';
+                $carpetaImagen= '../../imagenes/';
                 
-                // verificar si no existe
+                // verificar si no existe la carpeta
                 if (!is_dir($carpetaImagen)) {
                     // creo la cartpeta
                     mkdir($carpetaImagen);
                 }
-                exit;
+
+                // mover y añadir a la carpeta (directorio temporal-la carpeta - nombre)
+                // move_uploaded_file($imagen['tmp_name'],$carpetaImagen."{$imagen['name']}");
+
+                    // solucionar lo de reemplazar la imagen con un mismo nombre
+                        // generar un número unico
+                        $nombreImagen= md5(uniqid(rand(),true)).'.jpg' ;
+                    move_uploaded_file($imagen['tmp_name'],$carpetaImagen.$nombreImagen);
 
             // consulta preparadas sql para crear nueva propiedad 
             // sql query prepared  to create new propiety
-            $queryNewPropiety= $db ->prepare("INSERT INTO propiedad (titulo, precio,descripcion,habitaciones, serviciosHigienicos,estacionamiento,creacion,vendedor_id) VALUES (?,?,?,?,?,?,?,?)");
+            $queryNewPropiety= $db ->prepare("INSERT INTO propiedad (titulo, precio,descripcion,habitaciones,serviciosHigienicos,estacionamiento,creacion,imagen,vendedor_id) VALUES (?,?,?,?,?,?,?,?,?)");
             // vincular 
-            $queryNewPropiety->bind_param("sdsiiisi",$titulo,$precio,$descripcion,$habitaciones,$serviciosHigienicos,$estacionamiento,$creacion,$vendedor_id);
+            $queryNewPropiety->bind_param("sdsiiissi",$titulo,$precio,$descripcion,$habitaciones,$serviciosHigienicos,$estacionamiento,$creacion,$nombreImagen,$vendedor_id);
             // ejecuto
             $queryNewPropiety->execute();
             if ($queryNewPropiety->affected_rows>0) {
@@ -98,6 +104,7 @@
                 $estacionamiento= '';
                 $vendedor_id= '';
                 $creacion=date('Y-m-d');
+                $imagen='';
                 // redireccionar
                 // header('Location: /admin');
             }else{
@@ -167,7 +174,8 @@
 
             <label for="descripcion" class="descripcion">Descripción</label>
             <textarea name="descripcion" id="descripcion"> <?php echo$descripcion?></textarea>
-            <?php echo  (empty($descripcion) || (isset($error[0]))) ? "<p class='error' style='color:red'>{$error[0]}</p>":'';?> 
+            <?php echo  (isset($error[0])) ? "<p class='error' style='color:red'>{$error[0]}</p>":'';?> 
+
         </fieldset>
 
         <fieldset>
