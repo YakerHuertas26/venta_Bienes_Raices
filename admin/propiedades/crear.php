@@ -12,6 +12,7 @@
     // guardar mensajes de error de campos vacios
     // save error messages from empty fields 
     $error=[];
+    $errorImagen=[];
 
     // defino mis campos del fomulario 
     // i define my from flieds
@@ -38,6 +39,19 @@
         $vendedor_id= $_POST['vendedor'];
         $creacion=date('Y-m-d');
 
+        // guardar los datos de la imagen o file
+        $imagen= $_FILES['imagen'];
+        // var_dump($imagen['name']);
+
+        // echo "<pre>";
+        // var_dump($_POST);
+        // "</pre>";
+
+        // // super global para ver los datos de los archivos file
+        //     echo "<pre>";
+        //     var_dump($_FILES);
+        //     "</pre>";
+
 
         // validación de cada campo
         // validation of each field
@@ -47,10 +61,26 @@
         if (strlen($descripcion)<10) {
             $error[] = 'descripción muy corta';
         }
-
+        // validar el campo imagen 
+        if (!$imagen['name']|| $imagen['error']) {
+            $errorImagen[]='debe añadir una imagen';
+        }
+        
         // verificar si no hay errores
         // check not erros
-        if (empty($error)) {
+        if (empty($error) && empty($errorImagen)) {
+            // Subir los archivos
+
+                // dirección de carpeta en la raiz
+                $carpetaImagen= '../../imagenes';
+                
+                // verificar si no existe
+                if (!is_dir($carpetaImagen)) {
+                    // creo la cartpeta
+                    mkdir($carpetaImagen);
+                }
+                exit;
+
             // consulta preparadas sql para crear nueva propiedad 
             // sql query prepared  to create new propiety
             $queryNewPropiety= $db ->prepare("INSERT INTO propiedad (titulo, precio,descripcion,habitaciones, serviciosHigienicos,estacionamiento,creacion,vendedor_id) VALUES (?,?,?,?,?,?,?,?)");
@@ -118,7 +148,7 @@
         <a href="../index.php" class="boton boton-verde">Volver  </a>
 
     
-    <form action="/app_bienes_raices/admin/propiedades/crear.php" class="formulario" method="POST">
+    <form action="/app_bienes_raices/admin/propiedades/crear.php" class="formulario" method="POST" enctype="multipart/form-data">
         <fieldset>
             <legend>Información general</legend>
             
@@ -133,10 +163,11 @@
 
             <label for="imagen">Imagen: </label>
             <input type="file" name="imagen" id="imagen" accept="image/jpeg , image/png">
+            <?php echo (isset($errorImagen[0]))? "<p class='error' style='color:red'>{$errorImagen[0]}</p>":''; ?>
 
             <label for="descripcion" class="descripcion">Descripción</label>
             <textarea name="descripcion" id="descripcion"> <?php echo$descripcion?></textarea>
-            <?php echo (isset($error[0])) ? "<p class='error' style='color:red'>{$error[1]}</p>":'';?> 
+            <?php echo  (empty($descripcion) || (isset($error[0]))) ? "<p class='error' style='color:red'>{$error[0]}</p>":'';?> 
         </fieldset>
 
         <fieldset>

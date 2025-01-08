@@ -2,7 +2,7 @@
 <?php
     function conexion (){
         try {
-            $db= mysqli_connect('localhost','root','huertasya99','bienesraices');
+            $db= mysqli_connect('localhost','root','','bienesraices');
             if (!$db) {
                 echo 'error de conexión....';
             }
